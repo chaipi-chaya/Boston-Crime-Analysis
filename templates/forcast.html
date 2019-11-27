@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>  
+<script>
+window.onload = function () {
+
+var data = {{ ress|safe }};
+console.log(new Date(data[0]['day']* 1000).getFullYear());
+console.log(new Date(data[0]['day']* 1000).getMonth());
+console.log(new Date(data[0]['day']* 1000).getDate());
+var chartcrime = new CanvasJS.Chart("chartcrimeContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Predicted Amount of Crimes"
+	},
+	axisY:{
+		includeZero: false
+	},
+	axisX:{      
+		valueFormatString: "DD-MMM-YYYY" ,
+	},
+	data: [{        
+		type: "line",       
+		dataPoints: [
+			{ x:new Date(new Date(data[0]['day']* 1000).getFullYear(), new Date(data[0]['day']* 1000).getMonth(), new Date(data[0]['day']* 1000).getDate()), y:data[0]['numcrime'] },
+			{ x:new Date(new Date(data[1]['day']* 1000).getFullYear(), new Date(data[1]['day']* 1000).getMonth(), new Date(data[1]['day']* 1000).getDate()), y:data[1]['numcrime'] },
+			{ x:new Date(new Date(data[2]['day']* 1000).getFullYear(), new Date(data[2]['day']* 1000).getMonth(), new Date(data[2]['day']* 1000).getDate()), y:data[2]['numcrime'] }
+		]
+	}]
+});
+chartcrime.render();
+
+var charttemp = new CanvasJS.Chart("charttempContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Average Tempurature"
+	},
+	axisY:{
+		includeZero: false
+	},
+	axisX:{      
+		valueFormatString: "DD-MMM-YYYY" ,
+	},
+	data: [{        
+		type: "line",       
+		dataPoints: [
+			{ x:new Date(new Date(data[0]['day']* 1000).getFullYear(), new Date(data[0]['day']* 1000).getMonth(), new Date(data[0]['day']* 1000).getDate()), y:data[0]['tavg'] },
+			{ x:new Date(new Date(data[1]['day']* 1000).getFullYear(), new Date(data[1]['day']* 1000).getMonth(), new Date(data[1]['day']* 1000).getDate()), y:data[1]['tavg'] },
+			{ x:new Date(new Date(data[2]['day']* 1000).getFullYear(), new Date(data[2]['day']* 1000).getMonth(), new Date(data[2]['day']* 1000).getDate()), y:data[2]['tavg'] }
+		]
+	}]
+});
+charttemp.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartcrimeContainer" style="height: 370px; width: 100%;"></div>
+<div id="charttempContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
