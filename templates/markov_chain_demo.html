@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<title>Boston Crime Analysis and Prediction</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+<body>
+
+<!-- Navbar -->
+<div class="w3-top" style="z-index: 90000;">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="{{ url_for('start') }}" class="w3-bar-item w3-button">Boston Crime Analysis and Prediction</a>
+    <div class="w3-right w3-hide-small">
+	  <div class="w3-dropdown-hover">
+		  <a class="w3-button" style="background: white;min-width: 200px;">Code Explanation</a>
+		  <div class="w3-dropdown-content w3-bar-block w3-border" style="min-width: 200px;">
+			<a href="{{ url_for('explanation') }}" class="w3-bar-item w3-button">Web application and API</a>
+			<a href="{{ url_for('scraping') }}" class="w3-bar-item w3-button">Web Scraping</a>
+		  </div>
+	  </div>
+	  <div class="w3-dropdown-hover">
+		  <a class="w3-button" style="background: white;min-width: 200px;">Analysis</a>
+		  <div class="w3-dropdown-content w3-bar-block w3-border" style="min-width: 200px;">
+			<a href="{{ url_for('preprocessing') }}" class="w3-bar-item w3-button">Data Preprocessing</a>
+			<a href="{{ url_for('analyzing') }}" class="w3-bar-item w3-button">Data Analysis</a>
+			<a href="{{ url_for('regression') }}" class="w3-bar-item w3-button">Regression Analysis</a>
+			<a href="{{ url_for('pattern') }}" class="w3-bar-item w3-button">Markov Chain Analysis</a>
+		  </div>
+	  </div>
+	  <div class="w3-dropdown-hover">
+		  <a class="w3-button" style="background: white;min-width: 200px;">Demo</a>
+		  <div class="w3-dropdown-content w3-bar-block w3-border" style="min-width: 200px;">
+			<a href="{{ url_for('mcdemo') }}" class="w3-bar-item w3-button">Markov Chain</a>
+			<a href="{{ url_for('regression_api') }}" class="w3-bar-item w3-button">Regression API</a>
+			<a href="{{ url_for('forecast') }}" class="w3-bar-item w3-button">Crime Forecast</a>
+		  </div>
+	  </div>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  <img class="w3-image" src="{{url_for('static', filename='/imgs/bandner.png')}}" alt="Architecture" width="1500" height="800" style="height: 300px;object-fit: cover;">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white" style="padding: 20px 100px;border: 3px #fff solid;"><b>Boston Crime</b><span class="w3-padding w3-black w3-opacity-min" style="line-height: 40px;display: block;margin-top: 10px;"> <span class="w3-hide-small w3-text-light-grey">Markov Chain Demo</span></span></h1>
+  </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px;min-height: 376px;padding-top: 20px !important;">
+<div class="w3-container w3-row-padding">
+  <div class="w3-third">
+    <label>Select Crime Type</label>
+	<select class="w3-select w3-border w3-round-large" id="crime-type" onchange="changedistrictselect()"></select>
+</div>
+  <div class="w3-third">
+    <label>District of the Latest Occrrance</label>
+	<select class="w3-input w3-border w3-round-large" id="district"></select>
+</div>
+  <div class="w3-third">
+	<button class="w3-button w3-teal" style="margin-top: 23px;" onclick="return showProb()">Get a Graph</button>
+</div>
+</div>
+<div id="graph-header" style="display:none;text-align: center;"><h3 style="margin-top:20px;">Probabilities of the Next <span id="crime-type-header"></span> Occrrance in Districts Given that the Last One Occur in <span id="district-header"></span></h3></div>
+<svg id="chart" style="margin: 20px auto 50px;display: block;overflow: initial;"></svg>  
+<script src="https://d3js.org/d3.v4.min.js"></script>  
+<script></script> 
+<!-- End page content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16" style="height: 45px;">
+  <p style="padding: 0;margin: 0;font-size: x-small;">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+</footer>
+
+</body>
+
+<script>
+var data = {{ data|tojson|safe }};
+keys = Object.keys(data['MCdict']);
+
+var select = document.getElementById("crime-type");
+for (var i = 0; i < keys.length; i++){
+    var opt = document.createElement('option');
+    opt.value = keys[i];
+    opt.innerHTML = keys[i];
+	if (keys[i]) {
+		select.appendChild(opt);
+	}
+}
+
+var probdict = data['MCdict'][keys[0]];
+distkeys = Object.keys(probdict);
+
+var select = document.getElementById("district");
+for (var i = 0; i < distkeys.length; i++){
+    var opt = document.createElement('option');
+    opt.value = distkeys[i];
+    opt.innerHTML = distkeys[i];
+	if (distkeys[i]) {
+		select.appendChild(opt);
+	}
+}
+
+function changedistrictselect() {
+
+	var type = document.getElementById("crime-type");
+	var probdict = data['MCdict'][type.value];
+	var select = document.getElementById("district");
+	distkeys = Object.keys(probdict);
+	select.innerHTML = '';
+	for (var i = 0; i < distkeys.length; i++){
+		var opt = document.createElement('option');
+		opt.value = distkeys[i];
+		opt.innerHTML = distkeys[i];
+		if (distkeys[i]) {
+			select.appendChild(opt);
+		}
+	}
+}
+
+function showProb() {
+	document.getElementById("chart").innerHTML = "";
+	
+	var type = document.getElementById("crime-type");
+	var district = document.getElementById("district");
+	var MCdict = data['MCdict'];
+	var probdict = MCdict[type.value][district.value];
+	
+	document.getElementById("graph-header").style.display = "block";
+	document.getElementById("crime-type-header").innerHTML = type.value;
+	document.getElementById("district-header").innerHTML = district.value;
+	
+	var districts = Object.keys(probdict);
+	var dists = [];
+	var probs = [];
+	var probplots = []
+	for (var i = 0; i < districts.length; i++){
+		dists.push(districts[i]);
+		probs.push(probdict[districts[i]]);
+		probplots.push(probdict[districts[i]]*300);
+	}
+	var svgWidth = 800;  
+	var svgHeight = 350;
+
+	var svg = d3.select('svg')  
+		.attr("width", svgWidth)  
+		.attr("height", svgHeight)  
+		.attr("class", "bar-chart");
+	var dataset = probplots;
+
+	var barPadding = 10;  
+	var barWidth = (svgWidth / dataset.length);
+
+	var barChart = svg.selectAll("rect")  
+		.data(dataset)  
+		.enter()  
+		.append("rect")
+		.attr("y", function(d) {  
+			return svgHeight - d  
+		})  
+		.attr("height", function(d) {  
+			return d;  
+		})  
+		.attr("width", barWidth - barPadding)  
+		.attr("transform", function (d, i) {  
+			 var translate = [barWidth * i, -50];  
+			 return "translate("+ translate +")";  
+		})
+		.style("fill", "#69a3b2");
+		
+	var scale = d3.scaleLinear()
+                  .domain([0, 1])
+                  .range([300, 0]);
+
+    var y_axis = d3.axisLeft()
+                  .scale(scale);
+
+    svg.append("g")
+       .attr("transform", "translate(-5, 0)")
+       .call(y_axis)
+	  .selectAll("text")
+		.style("text-anchor", "end")
+		.style("font-size", 12)
+		.style("fill", "#69a3b2");
+		
+	var x = d3.scaleBand()
+		.domain(dists)
+		.range([-5, 795]); 
+		
+	svg
+	  .append("g")
+	  .attr("transform", "translate(0,300)")      // This controls the rotate position of the Axis
+	  .call(d3.axisBottom(x))
+	  .selectAll("text")
+		.attr("transform", "translate(10,10)")
+		.style("text-anchor", "end")
+		.style("font-size", 14)
+		.style("fill", "#69a3b2")
+		
+	return false;
+}
+</script>
+
+</html>

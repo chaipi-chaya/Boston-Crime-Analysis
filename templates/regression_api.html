@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<title>Boston Crime Analysis and Prediction</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+<body>
+
+<!-- Navbar -->
+<div class="w3-top" style="z-index: 90000;">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="{{ url_for('start') }}" class="w3-bar-item w3-button">Boston Crime Analysis and Prediction</a>
+    <div class="w3-right w3-hide-small">
+	  <div class="w3-dropdown-hover">
+		  <a class="w3-button" style="background: white;min-width: 200px;">Code Explanation</a>
+		  <div class="w3-dropdown-content w3-bar-block w3-border" style="min-width: 200px;">
+			<a href="{{ url_for('explanation') }}" class="w3-bar-item w3-button">Web application and API</a>
+			<a href="{{ url_for('scraping') }}" class="w3-bar-item w3-button">Web Scraping</a>
+		  </div>
+	  </div>
+	  <div class="w3-dropdown-hover">
+		  <a class="w3-button" style="background: white;min-width: 200px;">Analysis</a>
+		  <div class="w3-dropdown-content w3-bar-block w3-border" style="min-width: 200px;">
+			<a href="{{ url_for('preprocessing') }}" class="w3-bar-item w3-button">Data Preprocessing</a>
+			<a href="{{ url_for('analyzing') }}" class="w3-bar-item w3-button">Data Analysis</a>
+			<a href="{{ url_for('regression') }}" class="w3-bar-item w3-button">Regression Analysis</a>
+			<a href="{{ url_for('pattern') }}" class="w3-bar-item w3-button">Markov Chain Analysis</a>
+		  </div>
+	  </div>
+	  <div class="w3-dropdown-hover">
+		  <a class="w3-button" style="background: white;min-width: 200px;">Demo</a>
+		  <div class="w3-dropdown-content w3-bar-block w3-border" style="min-width: 200px;">
+			<a href="{{ url_for('mcdemo') }}" class="w3-bar-item w3-button">Markov Chain</a>
+			<a href="{{ url_for('regression_api') }}" class="w3-bar-item w3-button">Regression API</a>
+			<a href="{{ url_for('forecast') }}" class="w3-bar-item w3-button">Crime Forecast</a>
+		  </div>
+	  </div>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  <img class="w3-image" src="{{url_for('static', filename='/imgs/bandner.png')}}" alt="Architecture" width="1500" height="800" style="height: 300px;object-fit: cover;">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white" style="padding: 20px 100px;border: 3px #fff solid;"><b>Boston Crime</b><span class="w3-padding w3-black w3-opacity-min" style="line-height: 40px;display: block;margin-top: 10px;"> <span class="w3-hide-small w3-text-light-grey">Regression API</span></span></h1>
+  </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-container w3-content w3-center w3-padding-64" style="max-width:860px;min-height: 376px;padding-top: 20px !important;padding-bottom: 0px !important;">
+<div>
+	<h3>Crime Prediction API</h3>
+	<p style="text-align: left;">We provide the crime rate prediction from temperature API. You can get the prediction by send the request to our url. The example is as following.</p>
+</div>
+<div class="w3-card-4" style="margin-bottom:20px;box-shadow: none;">
+
+<header class="w3-teal" style="text-align: left;padding: 10px 15px;">
+  <h4>Request URL Example</h4>
+</header>
+
+<div style="text-align: left;padding: 10px 15px;border: 1px solid #ddd;border-top: 0;">
+	<p><b>API call:</b></p>
+  <p style="padding-left: 15px;"><code class="w3-codespan">http://www.localhost:5000/predict_crime_by_temp?temp={temp}</code></p>
+	<p><b>Parameters:</b></p>
+	<p style="padding-left: 15px;">temp: temperature in fahrenheit</p>
+	<p><b>Examples of API calls:</b></p>
+	<p style="padding-left: 15px;"><code class="w3-codespan">http://www.localhost:5000/predict_crime_by_temp?temp=50</code></p>
+</div>
+
+</div>
+<div class="w3-card-4" style="box-shadow: none;">
+
+<header class="w3-teal" style="text-align: left;padding: 10px 15px;">
+  <h4>Try it yourself:</h4>
+</header>
+
+<div style="text-align: left;padding: 10px 15px;border: 1px solid #ddd;border-top: 0;">
+	<p><b>Temperature:</b></p>
+	<p><input class="w3-input w3-border w3-round-large" id="temp" type="text" style="display: inline-block;width: 80%;" placeholder="50"/><button class="w3-button w3-teal" style=" display: inline-block;width: 18%;margin-left: 2%;margin-bottom: 4px;border-radius: 7px;" onclick="return sendRequest()">Send Request</button></p>
+	<div id="result" style="display:none;">
+	<p><b>API call:</b></p>
+	<p style="padding-left: 15px;"><code class="w3-codespan" id="test-api-call"></code></p>
+	<p><b>Results:</b></p>
+	<p id="return-api" style="padding-left: 15px;"></p>
+	</div>
+</div>
+
+</div>
+
+
+
+<!-- End page content -->
+</div>
+
+<div style="margin: 50px auto; text-align: center;">
+	<a href="{{ url_for('regression') }}" class="w3-button w3-white w3-border">Regression Analysis</a>
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16" style="height: 45px;">
+  <p style="padding: 0;margin: 0;font-size: x-small;">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+</footer>
+
+</body>
+
+<script>
+
+function sendRequest() {
+	var temp = 50;
+	if (document.getElementById("temp").value.length != 0) {
+		temp = document.getElementById("temp").value;
+	}
+	var url = "http://www.localhost:5000/predict_crime_by_temp?temp=" + temp;
+	
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		document.getElementById("result").style.display = 'block';
+        document.getElementById("test-api-call").innerHTML = url;
+        document.getElementById("return-api").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+	
+	return false;
+}
+
+</script>
+
+</html>
