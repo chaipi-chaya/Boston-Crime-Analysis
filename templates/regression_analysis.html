@@ -16048,6 +16048,15 @@ We will use the last two models for our api.</p>
 </div>
 </div>
 
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note: We create the input data for regression by using averages number of crimes in a day and group by them temperature of the day. The data we got is an average crime in a day for each temperature. Therefore, the prediction from our regression is an average of crimes of the day with a specific temperature. If we create a confidence interval of our prediction, we will get a range of average crime rate, and each average has its distribution. When compared with the actual crime rate, the residual is large because it is affected by both uncertainty of regression residual and inputs distribution (because our inputs are averages). Thus, we cannot use this model to predict the crime rate in the day with temperature. Thie model is best for predicting the average crime rate on a specific temperature, not an exact crime rate. However, because this is not a real production, we still created the prediction api and forecasting for demonstration.</p>
+
+</div>
+</div>
+</div>
+
 </div>
 
 </div>
