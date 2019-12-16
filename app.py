@@ -48,6 +48,10 @@ def regression():
 def pattern():
     return render_template('crime_pattern_analysis.html')
     
+@app.route("/short_patrol", methods=['GET','POST'])
+def short_patrol():
+    return render_template('shortest_patrol_route.html')
+    
 @app.route("/markov_chain_demo", methods=['GET','POST'])
 def mcdemo():
     file = open("model/MC_and_lamda.txt","r") 
