@@ -6,15 +6,15 @@ This reposity is an analysis of Boston crime using regression, markov chain and 
 
 There are two ways to view the analysis. 
 
-First: you can simplily click the analysis folder and go through each .ipynb file.
+First: you can simplily click the analysis folder and go through each .ipynb file.<br/>
 Second: you can also download this project and run the application to view the analysis.
 
 ### Prerequisites
 
 The project requires some packages.
 
-python: 3.7.6
-Flask: 1.1.1
+python: 3.7.6 <br/>
+Flask: 1.1.1 <br/>
 requests: 2.22.0
 
 
