@@ -27,6 +27,7 @@
 			<a href="{{ url_for('analyzing') }}" class="w3-bar-item w3-button">Data Analysis</a>
 			<a href="{{ url_for('regression') }}" class="w3-bar-item w3-button">Regression Analysis</a>
 			<a href="{{ url_for('pattern') }}" class="w3-bar-item w3-button">Markov Chain Analysis</a>
+			<a href="{{ url_for('short_patrol') }}" class="w3-bar-item w3-button">Shortest Patrol Route Analysis</a>
 		  </div>
 	  </div>
 	  <div class="w3-dropdown-hover">
@@ -114,7 +115,7 @@ function sendRequest() {
 	if (document.getElementById("temp").value.length != 0) {
 		temp = document.getElementById("temp").value;
 	}
-	var url = "http://www.localhost:5000/predict_crime_by_temp?temp=" + temp;
+	var url = "http://localhost:5000/predict_crime_by_temp?temp=" + temp;
 	
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
