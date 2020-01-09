@@ -30,7 +30,7 @@ This is a brief detail about data analysis, for full analysis, please kindly vis
 
 I identified missing data and used machine learning for filling null values. Then, I merged two data set into one csv file.
 
-### [Data Analysis Overall](https://github.com/chaipi-chaya/Boston-Crime-Analysis/blob/master/analysis/data_analysis_overall.ipynb)
+### [Overall Data Analysis](https://github.com/chaipi-chaya/Boston-Crime-Analysis/blob/master/analysis/data_analysis_overall.ipynb)
 
 I used the csv file above to analyze basic information of the data, from data distribution to trend in time series.
 
